@@ -1,20 +1,15 @@
-package Exercise3;
+public class ProgressListener{
 
-public class ProgressListener {
-
-    Downloader dload;
-    ProgressListener listener = new ProgressListener(dload)
-
-    public ProgressListener(Downloader dloader) {
-        this.dload = dloader
-
-    }
-
-    // to deadlock, try to get lock here
+    public final Object lock = new Object();
 
     public void onProgress(int total) {
-        dload.addListener(listener);
-
+        synchronized (lock) {
+            System.out.println("Downloaded bytes: " + total);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    
 }
